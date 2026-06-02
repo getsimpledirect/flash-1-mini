@@ -42,6 +42,10 @@ Key takeaways:
 - **Bilingual parity ratio 1.00** — identical privacy-compliance accuracy in English and French
 - General knowledge unchanged; complex reasoning substantially improved
 
+> **Note on licenses:** This repository (code, examples, documentation) is MIT.
+> The flash-1-mini model weights, hosted on Hugging Face, are Apache 2.0 (as a
+> derivative of Qwen3.5-4B). When citing the model, use Apache 2.0.
+
 ---
 
 ## Where it's weaker
