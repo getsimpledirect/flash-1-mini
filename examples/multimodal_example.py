@@ -100,7 +100,7 @@ with torch.no_grad():
         **inputs,
         max_new_tokens=512,
         do_sample=False,
-        temperature=0,
+        eos_token_id=processor.tokenizer.eos_token_id,
     )
 
 new_ids = output_ids[0][inputs["input_ids"].shape[-1]:]

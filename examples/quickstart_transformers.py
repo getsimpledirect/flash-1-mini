@@ -7,8 +7,8 @@ Requirements:
 Model: simpledirect/flash-1-mini (https://huggingface.co/simpledirect/flash-1-mini)
 Architecture: Qwen3_5ForConditionalGeneration — no trust_remote_code needed.
 
-Note on decoding: greedy (do_sample=False, temperature=0) is recommended for
-legal/regulatory work to maximise determinism.
+Note on decoding: greedy (do_sample=False) is recommended for legal/regulatory
+work to maximise determinism.
 """
 
 import torch
@@ -42,7 +42,7 @@ def generate(messages: list[dict], enable_thinking: bool = False, label: str = "
             **inputs,
             max_new_tokens=512,
             do_sample=False,
-            temperature=0,
+            eos_token_id=processor.tokenizer.eos_token_id,
         )
     # Decode only the newly generated tokens
     new_ids = output_ids[0][inputs["input_ids"].shape[-1]:]
