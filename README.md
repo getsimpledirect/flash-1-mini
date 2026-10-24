@@ -110,12 +110,28 @@ prompts and a thinking-on example.
 ### GGUF / Ollama (text-only)
 
 ```bash
+# Install the current Hugging Face CLI; Ollama must already be installed.
+python3 -m pip install -U huggingface_hub
+
 # Download
-huggingface-cli download simpledirect/flash-1-mini \
+hf download simpledirect/flash-1-mini \
     gguf/flash-1-mini-20260602-Q5_K_M.gguf --local-dir ./flash-1-mini-gguf
 
-# Ollama
-ollama create flash-1-mini -f Modelfile
+# Hub downloads retain the gguf/ subdirectory. Create the Modelfile beside it.
+cat > ./flash-1-mini-gguf/gguf/Modelfile <<'EOF'
+FROM ./flash-1-mini-20260602-Q5_K_M.gguf
+
+PARAMETER temperature 0
+PARAMETER num_ctx 8192
+
+SYSTEM """You are a bilingual Canadian legal research assistant. You answer in the same language as the user's question."""
+EOF
+
+# Run from the directory containing the GGUF and Modelfile.
+(
+    cd ./flash-1-mini-gguf/gguf &&
+    ollama create flash-1-mini -f Modelfile
+)
 ollama run flash-1-mini "What are the notice requirements under the Canada Labour Code?"
 ```
 

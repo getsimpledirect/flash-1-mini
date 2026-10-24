@@ -8,8 +8,8 @@
 - A recent llama.cpp build (**with Qwen3.5 hybrid linear-attention support**).
   Builds from mid-2026 onward should include this. If inference produces
   garbage output, your build is too old — rebuild from `main`.
-- [`huggingface-cli`](https://huggingface.co/docs/huggingface_hub/guides/cli)
-  (`pip install huggingface_hub`)
+- [`hf`](https://huggingface.co/docs/huggingface_hub/guides/cli)
+  (`python3 -m pip install -U huggingface_hub`)
 
 ---
 
@@ -34,23 +34,26 @@ default for most deployments.
 
 ```bash
 # Install the HF CLI if needed
-pip install huggingface_hub
+python3 -m pip install -U huggingface_hub
 
 # Download Q5_K_M (recommended)
-huggingface-cli download simpledirect/flash-1-mini \
+hf download simpledirect/flash-1-mini \
     gguf/flash-1-mini-20260602-Q5_K_M.gguf \
     --local-dir ./flash-1-mini-gguf
 
 # Or Q6_K for higher fidelity
-huggingface-cli download simpledirect/flash-1-mini \
+hf download simpledirect/flash-1-mini \
     gguf/flash-1-mini-20260602-Q6_K.gguf \
     --local-dir ./flash-1-mini-gguf
 
 # Or Q4_K_M for smallest footprint
-huggingface-cli download simpledirect/flash-1-mini \
+hf download simpledirect/flash-1-mini \
     gguf/flash-1-mini-20260602-Q4_K_M.gguf \
     --local-dir ./flash-1-mini-gguf
 ```
+
+Hub downloads retain the `gguf/` subdirectory, so the downloaded model paths below
+include `./flash-1-mini-gguf/gguf/`.
 
 ---
 
@@ -59,7 +62,7 @@ huggingface-cli download simpledirect/flash-1-mini \
 ```bash
 # Basic completion (thinking disabled via system prompt — or strip <think> blocks)
 ./llama-cli \
-    -m ./flash-1-mini-gguf/flash-1-mini-20260602-Q5_K_M.gguf \
+    -m ./flash-1-mini-gguf/gguf/flash-1-mini-20260602-Q5_K_M.gguf \
     --ctx-size 8192 \
     --temp 0 \
     --repeat-penalty 1.0 \
@@ -67,7 +70,7 @@ huggingface-cli download simpledirect/flash-1-mini \
 
 # Interactive chat mode
 ./llama-cli \
-    -m ./flash-1-mini-gguf/flash-1-mini-20260602-Q5_K_M.gguf \
+    -m ./flash-1-mini-gguf/gguf/flash-1-mini-20260602-Q5_K_M.gguf \
     --ctx-size 8192 \
     --temp 0 \
     --interactive \
@@ -85,7 +88,7 @@ huggingface-cli download simpledirect/flash-1-mini \
 
 ```bash
 ./llama-server \
-    -m ./flash-1-mini-gguf/flash-1-mini-20260602-Q5_K_M.gguf \
+    -m ./flash-1-mini-gguf/gguf/flash-1-mini-20260602-Q5_K_M.gguf \
     --ctx-size 8192 \
     --host 0.0.0.0 \
     --port 8080

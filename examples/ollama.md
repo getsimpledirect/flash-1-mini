@@ -9,8 +9,8 @@
 ## Prerequisites
 
 - [Ollama](https://ollama.com) installed and running.
-- `huggingface-cli` for downloading the GGUF
-  (`pip install huggingface_hub`).
+- [`hf`](https://huggingface.co/docs/huggingface_hub/guides/cli) for downloading the GGUF
+  (`python3 -m pip install -U huggingface_hub`).
 
 ---
 
@@ -18,7 +18,7 @@
 
 ```bash
 # Q5_K_M is a good default (2.9 GB)
-huggingface-cli download simpledirect/flash-1-mini \
+hf download simpledirect/flash-1-mini \
     gguf/flash-1-mini-20260602-Q5_K_M.gguf \
     --local-dir ./flash-1-mini-gguf
 ```
@@ -29,15 +29,18 @@ See [`gguf_llamacpp.md`](./gguf_llamacpp.md) for the full table of quant variant
 
 ## Step 2 — Create a Modelfile
 
-Create a file named `Modelfile` in the same directory as the GGUF:
+Hub downloads retain the `gguf/` subdirectory. Create the `Modelfile` alongside
+the downloaded GGUF at `./flash-1-mini-gguf/gguf/Modelfile`:
 
-```
+```bash
+cat > ./flash-1-mini-gguf/gguf/Modelfile <<'EOF'
 FROM ./flash-1-mini-20260602-Q5_K_M.gguf
 
 PARAMETER temperature 0
 PARAMETER num_ctx 8192
 
 SYSTEM """You are a bilingual Canadian legal research assistant. You answer in the same language as the user's question."""
+EOF
 ```
 
 > **Tip:** Set `temperature 0` for legal work to maximise determinism.
@@ -48,7 +51,10 @@ SYSTEM """You are a bilingual Canadian legal research assistant. You answer in t
 
 ```bash
 # Run from the directory containing both the GGUF and Modelfile
-ollama create flash-1-mini -f Modelfile
+(
+    cd ./flash-1-mini-gguf/gguf &&
+    ollama create flash-1-mini -f Modelfile
+)
 ```
 
 ---
