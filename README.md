@@ -23,6 +23,8 @@ retains the base model's general reasoning and vision capabilities.
 
 ## Highlights
 
+The figures below are retained release documentation, not a new evaluation of the current environment. The linked model card owns the methodology, artifact revision and limitations; compare the actual task and regression tables before selecting this historical release.
+
 Numbers are flash-1-mini vs. Qwen3.5-4B (base), measured under identical conditions.
 Full methodology and the CBLRE eval-set documentation are in the [Hugging Face model card](https://huggingface.co/simpledirect/flash-1-mini).
 
